@@ -49,10 +49,9 @@ impl Flag {
         }
     }
 
-    pub fn help(&self) -> String {
+    pub fn help(&self, package_name: &str, indentation: usize) -> String {
         let usage = format!(
-            "usage: {} {}",
-            env!("CARGO_PKG_NAME"),
+            "usage: {package_name} {}",
             self.descriptions
                 .iter()
                 .map(|f| format!("[{}, {}]", f.0, f.1.1.to_string()))
@@ -69,13 +68,12 @@ impl Flag {
                         "  {}{} {}",
                         k,
                         {
-                            let len = 20;
-                            if k.len() > len {
-                                let mut r = " ".repeat(len);
+                            if k.len() > indentation {
+                                let mut r = " ".repeat(indentation);
                                 r.extend([' ', ' ', '\n'].iter());
                                 r
                             } else {
-                                " ".repeat(len - k.len())
+                                " ".repeat(indentation - k.len())
                             }
                         },
                         v.0
